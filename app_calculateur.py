@@ -25,9 +25,10 @@ def update_net_worth(net_worth, income, spending, return_rate, age, investment_t
     wealth_tax = 0.
     if net_worth > wealth_tax_threshold:
         wealth_tax = (net_worth-wealth_tax_threshold)*wealth_tax_rate
-    s = spending + wealth_tax - income
+    s = spending  - income + wealth_tax
     if s > 0:
         s = s/(1-investment_tax_rate)
+    #s += wealth_tax
     new_worth = net_worth * (1 + return_rate) - s
     return max(new_worth, 0)
 
@@ -57,6 +58,7 @@ def retirement_simulation(start_age, end_age, current_income, income_increase_ra
         state_pension = state_pension*(1+inflation_rate)
         current_spending = update_spending(current_spending, inflation_rate)
         current_income = update_income(current_income, income_increase_rate, age, retirement_age)
+        wealth_tax_threshold *= (1+inflation_rate)
         data["Delta Net Worth"].append(new_net_worth - net_worth)
         net_worth = new_net_worth
 
@@ -82,7 +84,7 @@ STATE_RETIREMENT_AGE = 66
 # Configuration des entrées utilisateur
 percent_format = "%.3f"
 start_age = st.number_input("Age initial", min_value=18, max_value=100, value=INIT_AGE)
-end_age = st.number_input("Age final de la simulation", min_value=18, max_value=150, value=100)
+end_age = st.number_input("Age final de la simulation", min_value=18, value=100)
 retirement_age = st.number_input("Age de départ à la retraite", min_value=18, max_value=100, value=RETIREMENT_AGE)
 current_income = st.number_input("Revenu annuel initial (net net)", min_value=0, value=CURRENT_INCOME)
 income_increase_rate = st.number_input("Taux de réévaluation annuel du revenu", min_value=0.0, max_value=1.0, format=percent_format, value=INCOME_INCREASE_RATE)
