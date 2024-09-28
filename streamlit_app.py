@@ -174,3 +174,4 @@ if st.button("Calculer la rente"):
 
     st.header("Données de la simulation")
     st.dataframe(df.set_index("Age"))
+
