@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
 today = datetime.today().strftime('%Y-%m-%d')
+st.set_page_config(
+    page_title="Simulateur du rentier",
+)
 
 def compute_income(current_income, age, retirement_age, state_retirement_age, state_pension):
     income = 0
@@ -72,12 +75,12 @@ def retirement_simulation(start_age, end_age, current_income, income_increase_ra
 st.title("Calculateur de rente avancé")
 
 INIT_AGE = 41
-RETIREMENT_AGE = 41
+RETIREMENT_AGE = 44
 CURRENT_INCOME = 48_000
 INCOME_INCREASE_RATE = 0.022
 CURRENT_SPENDING = 45_000
 INFLATION = 0.03
-INIT_NET_WORTH = 1_680_000
+INIT_NET_WORTH = 1_300_000
 RETURN_RATE = 0.07
 INVESTMENT_TAX_RATE = 0.33
 STATE_PENSION = 8900
@@ -170,4 +173,4 @@ if st.button("Calculer la rente"):
         st.warning("Attention, vous ne maintiendrez pas votre pouvoir d'achat!")
 
     st.header("Données de la simulation")
-    st.dataframe(df)
+    st.dataframe(df.set_index("Age"))
